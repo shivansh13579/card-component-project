@@ -117,7 +117,7 @@ const products = [
 
 app.get('/api/products',(req,res) => {
 
-
+    
      if(req.query.search){
         const filterProducts = products.filter(product =>
             product.name.toLowerCase().includes(req.query.search.toLowerCase())
@@ -126,17 +126,31 @@ app.get('/api/products',(req,res) => {
         return;
      }
 
-
+    setTimeout(() => {
+       res.send(products)
+    });
 })
 
-app.get('/api/products/:id',(req,res) => {
+app.get('/api/products/:id',(req,res) =>{
     const id = req.params.id;
-    const productData = products.filter((data)=>{
-        return data.id = id
+
+    const filterData = products.filter( (data) => {
+       return data.id == id 
     })
 
-    // return productData[0];
-    console.log(productData)
+        // console.log(filterData);
+        // res.send(filterData[0])
+        // return;
+
+
+if(filterData.length > 0){
+        res.json(filterData[0])
+}else{
+    res.json({
+        status: 400,
+        message: "product is not found"
+    })
+}
 })
 
 const port = process.env.PORT || 3000
